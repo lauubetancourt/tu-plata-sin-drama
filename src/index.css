@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Sora", "Nunito Sans", "Segoe UI", sans-serif;
+    color: #0f172a;
+    background: #dbe4eb;
+  }
+}
