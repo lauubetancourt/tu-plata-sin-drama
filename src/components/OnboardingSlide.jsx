@@ -1,3 +1,5 @@
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
 import { Link } from 'react-router-dom'
 import { Button } from './Button'
 import { PhoneFrame } from './PhoneFrame'
@@ -15,16 +17,27 @@ export function OnboardingSlide({
     <PhoneFrame>
       <section className="flex min-h-full flex-col">
         <div className="mb-8 text-right">
-          <Link className="text-xs font-semibold text-slate-500" to="/dashboard">
+          <Link className="text-xs font-semibold text-muted-foreground" to="/dashboard">
             Omitir
           </Link>
         </div>
 
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-          <div className="mx-auto mb-5 h-24 w-24 rounded-[28px] bg-gradient-to-br from-lime-300 to-lime-500" />
-          <h1 className="text-2xl font-extrabold text-slate-900">{title}</h1>
-          <p className="mt-3 text-sm leading-relaxed text-slate-600">{description}</p>
-        </div>
+        <Card className="rounded-3xl border border-border/70 bg-card py-0 text-center shadow-sm">
+          <CardContent className="px-6 py-6">
+            <div className="mx-auto mb-4 grid h-24 w-24 place-items-center rounded-[28px] bg-gradient-to-br from-primary to-primary/70 text-xl font-black text-primary-foreground">
+              {step}
+            </div>
+            <Badge className="mb-3" variant="secondary">
+              Paso {step} de {total}
+            </Badge>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground">
+              {title}
+            </h1>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              {description}
+            </p>
+          </CardContent>
+        </Card>
 
         <div className="mt-6 flex items-center justify-center gap-2">
           {Array.from({ length: total }).map((_, index) => (
@@ -32,7 +45,7 @@ export function OnboardingSlide({
               key={index}
               className={[
                 'h-2 rounded-full transition-all',
-                index + 1 === step ? 'w-8 bg-lime-500' : 'w-2 bg-slate-300',
+                index + 1 === step ? 'w-8 bg-primary' : 'w-2 bg-muted',
               ].join(' ')}
             />
           ))}

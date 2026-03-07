@@ -1,15 +1,11 @@
+import { buttonVariants, Button as UiButton } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 
-function getVariant(variant) {
-  if (variant === 'ghost') {
-    return 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-100'
-  }
-
-  if (variant === 'danger') {
-    return 'bg-red-500 text-white hover:bg-red-600'
-  }
-
-  return 'bg-lime-500 text-slate-900 hover:bg-lime-400'
+const variantMap = {
+  primary: 'default',
+  ghost: 'outline',
+  danger: 'destructive',
 }
 
 export function Button({
@@ -18,22 +14,33 @@ export function Button({
   variant = 'primary',
   className = '',
   type = 'button',
+  size = 'default',
 }) {
-  const baseClass =
-    'inline-flex w-full items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold transition'
-  const classNames = `${baseClass} ${getVariant(variant)} ${className}`.trim()
+  const mappedVariant = variantMap[variant] ?? variant
+  const baseClass = 'h-11 w-full rounded-2xl px-4 text-sm font-semibold'
 
   if (to) {
     return (
-      <Link className={classNames} to={to}>
+      <Link
+        className={cn(
+          buttonVariants({ variant: mappedVariant, size, className: baseClass }),
+          className,
+        )}
+        to={to}
+      >
         {children}
       </Link>
     )
   }
 
   return (
-    <button className={classNames} type={type}>
+    <UiButton
+      className={cn(baseClass, className)}
+      size={size}
+      type={type}
+      variant={mappedVariant}
+    >
       {children}
-    </button>
+    </UiButton>
   )
 }

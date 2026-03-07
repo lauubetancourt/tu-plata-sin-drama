@@ -1,3 +1,5 @@
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
 import { BottomNav } from '../../components/BottomNav'
 import { Button } from '../../components/Button'
 import { PageHeader } from '../../components/PageHeader'
@@ -10,16 +12,19 @@ export function CategoriesPage() {
     <PhoneFrame>
       <PageHeader title="Categorias" backTo="/dashboard" />
 
-      <section className="space-y-2 rounded-3xl border border-slate-200 bg-white p-4">
-        {CATEGORIES.map((category) => (
-          <div
-            key={category}
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700"
-          >
-            {category}
-          </div>
-        ))}
-      </section>
+      <Card className="rounded-3xl py-0">
+        <CardContent className="space-y-2 p-4">
+          {CATEGORIES.map((category) => (
+            <Badge
+              className="flex h-10 justify-start rounded-xl border-border/70 px-3 text-sm font-semibold"
+              key={category}
+              variant="outline"
+            >
+              {category}
+            </Badge>
+          ))}
+        </CardContent>
+      </Card>
 
       <div className="mt-5">
         <Button to="/movimientos/nuevo">Agregar movimiento</Button>

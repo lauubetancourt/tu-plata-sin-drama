@@ -1,3 +1,5 @@
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
 import { BottomNav } from '../../components/BottomNav'
 import { Button } from '../../components/Button'
 import { PageHeader } from '../../components/PageHeader'
@@ -8,10 +10,15 @@ export function RemindersPage() {
     <PhoneFrame>
       <PageHeader title="Recordatorios" backTo="/dashboard" />
 
-      <section className="rounded-3xl border border-slate-200 bg-white p-4">
-        <p className="text-sm font-bold text-slate-800">Pago de tarjeta</p>
-        <p className="mt-1 text-xs text-slate-500">28/03/26</p>
-      </section>
+      <Card className="rounded-3xl py-0">
+        <CardContent className="space-y-2 p-4">
+          <Badge className="w-fit" variant="secondary">
+            Recordatorio activo
+          </Badge>
+          <p className="text-sm font-bold text-foreground">Pago de tarjeta</p>
+          <p className="text-xs text-muted-foreground">28/03/26</p>
+        </CardContent>
+      </Card>
 
       <div className="mt-5 grid grid-cols-2 gap-3">
         <Button to="/recordatorios/editar" variant="ghost">

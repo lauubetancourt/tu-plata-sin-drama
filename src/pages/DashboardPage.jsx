@@ -1,3 +1,6 @@
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { ActionTile } from '../components/ActionTile'
 import { BottomNav } from '../components/BottomNav'
 import { Button } from '../components/Button'
@@ -8,20 +11,20 @@ export function DashboardPage() {
   return (
     <PhoneFrame>
       <section className="space-y-5">
-        <header className="rounded-3xl bg-slate-900 p-5 text-white">
-          <p className="text-xs uppercase tracking-[0.2em] text-lime-300">
-            Tu plata, sin drama
-          </p>
-          <h1 className="mt-2 text-2xl font-black">Registro express</h1>
-          <p className="mt-2 text-xs text-slate-300">
-            Registra un movimiento en menos de 10 segundos.
-          </p>
-          <div className="mt-4">
-            <Button className="w-auto px-5" to="/registro-express">
+        <Card className="rounded-3xl border-border/80 bg-gradient-to-br from-foreground to-foreground/80 py-0 text-primary-foreground">
+          <CardContent className="space-y-3 px-5 py-5">
+            <Badge className="bg-primary/20 text-primary-foreground" variant="secondary">
+              Tu plata, sin drama
+            </Badge>
+            <h1 className="text-2xl font-black tracking-tight">Registro express</h1>
+            <p className="text-xs text-primary-foreground/70">
+              Registra un movimiento en menos de 10 segundos.
+            </p>
+            <Button className="w-auto px-5" size="lg" to="/registro-express">
               Ir a registro express
             </Button>
-          </div>
-        </header>
+          </CardContent>
+        </Card>
 
         <section className="grid grid-cols-2 gap-3">
           <StatCard amount="$1.2 MILL" label="Ingresos" tone="income" />
@@ -29,7 +32,10 @@ export function DashboardPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-sm font-bold text-slate-700">Acciones principales</h2>
+          <div className="space-y-2">
+            <h2 className="text-sm font-bold text-muted-foreground">Acciones principales</h2>
+            <Separator />
+          </div>
           <div className="grid grid-cols-2 gap-3">
             <ActionTile
               subtitle="Lista, agrega y edita gastos"

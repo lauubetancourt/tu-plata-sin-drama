@@ -1,13 +1,17 @@
-export function FormField({ label, placeholder, value }) {
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { cn } from '@/lib/utils'
+
+export function FormField({ label, placeholder, value, className = '' }) {
   return (
-    <label className="block space-y-2">
-      <span className="text-xs font-semibold text-slate-600">{label}</span>
-      <input
-        className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-lime-400 focus:outline-none"
+    <div className={cn('space-y-2', className)}>
+      <Label className="text-xs font-semibold text-muted-foreground">{label}</Label>
+      <Input
+        className="h-11 rounded-xl bg-background/80 text-sm"
         defaultValue={value}
         placeholder={placeholder}
         readOnly
       />
-    </label>
+    </div>
   )
 }

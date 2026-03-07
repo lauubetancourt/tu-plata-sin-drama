@@ -1,8 +1,18 @@
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
 export function EmptyStateCard({ title, subtitle }) {
   return (
-    <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-6 text-center">
-      <h2 className="text-lg font-bold text-slate-800">{title}</h2>
-      <p className="mt-2 text-sm text-slate-500">{subtitle}</p>
-    </div>
+    <Card className="rounded-3xl border border-dashed py-0 text-center">
+      <CardHeader className="px-6 pb-0 pt-6">
+        <Badge className="mx-auto" variant="secondary">
+          Estado
+        </Badge>
+        <CardTitle className="pt-2 text-lg font-bold">{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="px-6 pb-6 pt-2 text-sm text-muted-foreground">
+        {subtitle}
+      </CardContent>
+    </Card>
   )
 }

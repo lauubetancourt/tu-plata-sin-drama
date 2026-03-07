@@ -1,3 +1,6 @@
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { Link } from 'react-router-dom'
 import { BottomNav } from '../../components/BottomNav'
 import { Button } from '../../components/Button'
@@ -17,30 +20,32 @@ export function MovementsPage() {
 
       <section className="space-y-3">
         {MOVEMENTS.map((movement) => (
-          <article
-            key={movement.id}
-            className="rounded-2xl border border-slate-200 bg-white p-4"
-          >
-            <p className="text-xs font-semibold text-slate-500">{movement.date}</p>
-            <div className="mt-2 flex items-center justify-between">
-              <p className="text-sm font-bold text-slate-800">{movement.name}</p>
-              <p className="text-sm font-extrabold text-red-500">{movement.amount}</p>
-            </div>
-            <div className="mt-3 flex gap-2">
-              <Link
-                className="rounded-lg bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600"
-                to="/movimientos/editar"
-              >
-                Editar
-              </Link>
-              <Link
-                className="rounded-lg bg-red-100 px-2 py-1 text-xs font-semibold text-red-600"
-                to="/movimientos/eliminar"
-              >
-                Eliminar
-              </Link>
-            </div>
-          </article>
+          <Card key={movement.id} className="rounded-2xl py-0">
+            <CardContent className="space-y-3 p-4">
+              <Badge variant="secondary">{movement.date}</Badge>
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-bold text-foreground">{movement.name}</p>
+                <p className="text-sm font-extrabold text-destructive">{movement.amount}</p>
+              </div>
+              <Separator />
+              <div className="flex gap-2">
+                <Button
+                  className="h-8 w-auto px-3 text-xs"
+                  size="sm"
+                  to="/movimientos/editar"
+                  variant="ghost"
+                >
+                  Editar
+                </Button>
+                <Link
+                  className="inline-flex h-8 items-center justify-center rounded-lg border border-destructive/40 px-3 text-xs font-semibold text-destructive transition hover:bg-destructive/10"
+                  to="/movimientos/eliminar"
+                >
+                  Eliminar
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </section>
 

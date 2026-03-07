@@ -1,3 +1,10 @@
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+} from '@/components/ui/navigation-menu'
+import { cn } from '@/lib/utils'
 import { NavLink } from 'react-router-dom'
 
 const NAV_ITEMS = [
@@ -10,26 +17,30 @@ const NAV_ITEMS = [
 
 export function BottomNav() {
   return (
-    <nav className="sticky bottom-0 mt-6 rounded-2xl border border-slate-200 bg-white/95 p-2 backdrop-blur">
-      <ul className="grid grid-cols-5 gap-1">
+    <Card className="sticky bottom-0 mt-6 rounded-2xl border border-border/70 bg-card/95 py-0 shadow-sm backdrop-blur">
+      <CardContent className="p-2">
+        <NavigationMenu className="w-full max-w-none">
+          <NavigationMenuList className="grid w-full grid-cols-5 gap-1">
         {NAV_ITEMS.map((item) => (
-          <li key={item.to}>
+            <NavigationMenuItem className="w-full" key={item.to}>
             <NavLink
               to={item.to}
               className={({ isActive }) =>
-                [
+                cn(
                   'block rounded-xl px-1 py-2 text-center text-[10px] font-semibold transition',
                   isActive
-                    ? 'bg-lime-500 text-slate-900'
-                    : 'text-slate-500 hover:bg-slate-100',
-                ].join(' ')
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:bg-muted',
+                )
               }
             >
               {item.label}
             </NavLink>
-          </li>
+            </NavigationMenuItem>
         ))}
-      </ul>
-    </nav>
+          </NavigationMenuList>
+        </NavigationMenu>
+      </CardContent>
+    </Card>
   )
 }
