@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom'
 
 const variantMap = {
   primary: 'default',
+  cta: 'cta',
   ghost: 'outline',
   danger: 'destructive',
+  subtle: 'subtle',
 }
 
 export function Button({
@@ -15,6 +17,8 @@ export function Button({
   className = '',
   type = 'button',
   size = 'default',
+  disabled = false,
+  onClick,
 }) {
   const mappedVariant = variantMap[variant] ?? variant
   const baseClass = 'h-11 w-full rounded-2xl px-4 text-sm font-semibold'
@@ -39,6 +43,8 @@ export function Button({
       size={size}
       type={type}
       variant={mappedVariant}
+      disabled={disabled}
+      onClick={onClick}
     >
       {children}
     </UiButton>

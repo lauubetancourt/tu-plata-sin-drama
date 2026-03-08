@@ -1,3 +1,4 @@
+import { HandCoins } from 'lucide-react'
 import { OnboardingSlide } from '../../components/OnboardingSlide'
 
 export function OnboardingWelcomePage() {
@@ -7,6 +8,7 @@ export function OnboardingWelcomePage() {
       nextTo="/onboarding/2"
       step={1}
       title="¡Bienvenido!"
+      icon={<HandCoins />}
       total={4}
     />
   )

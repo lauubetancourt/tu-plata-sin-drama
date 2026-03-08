@@ -12,7 +12,7 @@ const NAV_ITEMS = [
   { to: '/movimientos', label: 'Movimientos' },
   { to: '/categorias', label: 'Categorias' },
   { to: '/metas', label: 'Metas' },
-  { to: '/recordatorios/vacio', label: 'Recordatorios' },
+  { to: '/recordatorios', label: 'Recordatorios' },
 ]
 
 export function BottomNav() {

@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { PhoneFrame } from "../components/PhoneFrame";
 import { FingerprintIcon, DeleteIcon } from "lucide-react";
+import { useApp } from "../context/AppContext";
 
 const CORRECT_PIN = "1234";
 const MAX_ATTEMPTS = 3;
 
 export function BiometricLoginPage() {
   const navigate = useNavigate();
+  const { isNewUser } = useApp();
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState(null); // null | 'loading' | 'success' | 'error'
   const [failedAttempts, setFailedAttempts] = useState(0);
@@ -35,7 +37,7 @@ export function BiometricLoginPage() {
     setStatus("loading");
     setTimeout(() => {
       setStatus("success");
-      setTimeout(() => navigate("/onboarding/1"), 1000);
+      setTimeout(() => navigate(isNewUser ? "/onboarding/1" : "/dashboard"), 1000);
     }, 1800);
   }
 
@@ -64,7 +66,7 @@ export function BiometricLoginPage() {
       setTimeout(() => {
         if (next === CORRECT_PIN) {
           setStatus("success");
-          setTimeout(() => navigate("/onboarding/1"), 1000);
+          setTimeout(() => navigate(isNewUser ? "/onboarding/1" : "/dashboard"), 1000);
         } else {
           setPinError(true);
           setPin("");

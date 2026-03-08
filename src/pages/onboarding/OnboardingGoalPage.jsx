@@ -1,3 +1,4 @@
+import { PiggyBank } from 'lucide-react'
 import { OnboardingSlide } from '../../components/OnboardingSlide'
 
 export function OnboardingGoalPage() {
@@ -9,6 +10,7 @@ export function OnboardingGoalPage() {
       previousTo="/onboarding/3"
       step={4}
       title="Alcanza tus Metas de Ahorro"
+      icon={<PiggyBank/>}
       total={4}
     />
   )

@@ -1,3 +1,4 @@
+import { Wallet } from 'lucide-react'
 import { OnboardingSlide } from '../../components/OnboardingSlide'
 
 export function OnboardingBudgetPage() {
@@ -8,6 +9,7 @@ export function OnboardingBudgetPage() {
       previousTo="/onboarding/2"
       step={3}
       title="Configura tus Presupuestos"
+      icon={<Wallet/>}
       total={4}
     />
   )

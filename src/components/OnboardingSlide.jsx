@@ -1,31 +1,25 @@
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
-import { Link } from 'react-router-dom'
-import { Button } from './Button'
-import { PhoneFrame } from './PhoneFrame'
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "./Button";
+import { PhoneFrame } from "./PhoneFrame";
 
 export function OnboardingSlide({
   title,
   description,
+  icon,
   step,
   total,
   previousTo,
   nextTo,
-  nextLabel = 'Siguiente',
+  nextLabel = "Siguiente",
 }) {
   return (
     <PhoneFrame>
       <section className="flex min-h-full flex-col">
-        <div className="mb-8 text-right">
-          <Link className="text-xs font-semibold text-muted-foreground" to="/dashboard">
-            Omitir
-          </Link>
-        </div>
-
         <Card className="rounded-3xl border border-border/70 bg-card py-0 text-center shadow-sm">
           <CardContent className="px-6 py-6">
-            <div className="mx-auto mb-4 grid h-24 w-24 place-items-center rounded-[28px] bg-gradient-to-br from-primary to-primary/70 text-xl font-black text-primary-foreground">
-              {step}
+            <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-[28px] bg-gradient-to-br from-primary to-primary/70 text-primary-foreground">
+              <span className="flex h-12 w-12 items-center justify-center [&>svg]:h-full [&>svg]:w-full">{icon}</span>
             </div>
             <Badge className="mb-3" variant="secondary">
               Paso {step} de {total}
@@ -44,14 +38,16 @@ export function OnboardingSlide({
             <span
               key={index}
               className={[
-                'h-2 rounded-full transition-all',
-                index + 1 === step ? 'w-8 bg-primary' : 'w-2 bg-muted',
-              ].join(' ')}
+                "h-2 rounded-full transition-all",
+                index + 1 === step ? "w-8 bg-primary" : "w-2 bg-muted",
+              ].join(" ")}
             />
           ))}
         </div>
 
-        <div className="mt-auto grid grid-cols-2 gap-3 pt-8">
+        <div className="mt-auto grid grid-cols-4 gap-3 pt-8">
+          <Button variant="subtle" to="/dashboard">Omitir</Button>
+          <br/>
           {previousTo ? (
             <Button to={previousTo} variant="ghost">
               Anterior
@@ -63,5 +59,5 @@ export function OnboardingSlide({
         </div>
       </section>
     </PhoneFrame>
-  )
+  );
 }
