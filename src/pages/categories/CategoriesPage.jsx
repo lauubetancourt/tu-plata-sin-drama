@@ -216,7 +216,7 @@ export function CategoriesPage() {
         <DialogContent className="rounded-3xl" showCloseButton={false}>
           <DialogHeader className="flex items-center">
             <DialogTitle>
-              {formTarget ? "Editar categoría" : "Nueva categoría"}
+              {formTarget ? "Editar categoría" : "Agregar categoría"}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
@@ -224,7 +224,7 @@ export function CategoriesPage() {
               required
               autoFocus
               label="Nombre"
-              placeholder="Ej: Alimentación, transporte..."
+              placeholder="Ej. Alimentación, transporte..."
               value={formName}
               error={formErrors.name}
               onChange={(e) => {
@@ -235,7 +235,7 @@ export function CategoriesPage() {
             <FormField
               inputMode="numeric"
               label="Presupuesto"
-              placeholder="Ej: 150000, 300000"
+              placeholder="Ej. 150000, 300000"
               value={formBudget}
               onChange={(e) =>
                 setFormBudget(e.target.value.replace(/[^0-9]/g, ""))

@@ -73,7 +73,7 @@ export function DashboardPage() {
               to="/movimientos"
             />
             <ActionTile
-              subtitle="Organiza tus gastos por categorías"
+              subtitle="Clasifica y ordena tus gastos"
               title="Categorías"
               to="/categorias"
             />

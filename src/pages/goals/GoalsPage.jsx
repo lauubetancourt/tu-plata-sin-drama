@@ -114,13 +114,13 @@ function GoalFormDialog({ open, initial, onClose, onSave }) {
     >
       <DialogContent className="rounded-3xl" showCloseButton={false}>
         <DialogHeader className="flex items-center">
-          <DialogTitle>{isEdit ? "Editar meta" : "Nueva meta"}</DialogTitle>
+          <DialogTitle>{isEdit ? "Editar meta de ahorro" : "Agregar meta de ahorro"}</DialogTitle>
         </DialogHeader>
         <div className="space-y-3">
           <FormField
             required
             label="Nombre"
-            placeholder="Ej: Viaje a la playa, Carro"
+            placeholder="Ej. Viaje a la playa, Carro"
             value={form.name}
             error={errors.name}
             onChange={(e) => set("name", e.target.value)}
@@ -129,7 +129,7 @@ function GoalFormDialog({ open, initial, onClose, onSave }) {
             required
             inputMode="numeric"
             label="Valor"
-            placeholder="Ej: 100000"
+            placeholder="Ej. 100000"
             value={form.target}
             error={errors.target}
             onChange={(e) =>
@@ -139,7 +139,7 @@ function GoalFormDialog({ open, initial, onClose, onSave }) {
           <FormField
             inputMode="numeric"
             label="Ahorro actual"
-            placeholder="Ej: 5000"
+            placeholder="Ej. 5000"
             value={form.saved}
             error={errors.saved}
             onChange={(e) =>
@@ -166,7 +166,7 @@ function GoalFormDialog({ open, initial, onClose, onSave }) {
                 Guardando...
               </span>
             ) : (
-              "Guardar"
+              isEdit ? "Guardar cambios" : "Agregar"
             )}
           </Button>
         </DialogFooter>

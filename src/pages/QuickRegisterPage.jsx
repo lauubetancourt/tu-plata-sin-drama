@@ -78,7 +78,7 @@ export function QuickRegisterPage() {
             autoFocus
             inputMode="numeric"
             label="Valor"
-            placeholder="Ej: 15000"
+            placeholder="Ej. 15000"
             value={amount}
             error={amountError ? 'Ingresa el valor del gasto' : undefined}
             onChange={(e) => {
@@ -89,7 +89,7 @@ export function QuickRegisterPage() {
           />
           <FormField
             label="Descripción"
-            placeholder="Ej: Café, taxi, almuerzo..."
+            placeholder="Ej. Café, taxi, almuerzo..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />

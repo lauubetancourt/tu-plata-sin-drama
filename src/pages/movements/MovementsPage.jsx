@@ -105,7 +105,7 @@ export function MovementsPage() {
       {movements.length === 0 ? (
         <EmptyStateCard
           title="Aún no hay movimientos"
-          subtitle="Agrega tu primer gasto o ingreso para empezar a llevar el control"
+          subtitle="Agrega tu primer gasto o ingreso para empezar a llevar el control."
           cta="Agregar movimiento"
           action={openAdd}
         />

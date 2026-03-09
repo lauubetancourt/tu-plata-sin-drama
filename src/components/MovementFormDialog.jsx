@@ -119,7 +119,7 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
     <Dialog open={open} onOpenChange={(o) => { if (!o && !loading) onClose() }}>
       <DialogContent className="rounded-3xl" showCloseButton={false}>
         <DialogHeader className="flex items-center">
-          <DialogTitle>{isEdit ? 'Editar movimiento' : 'Nuevo movimiento'}</DialogTitle>
+          <DialogTitle>{isEdit ? 'Editar movimiento' : 'Agregar movimiento'}</DialogTitle>
         </DialogHeader>
 
         {!isOnline && (
@@ -260,7 +260,7 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
                 <Loader2 className="size-4 animate-spin" />
                 Agregando...
               </span>
-            ) : (isEdit ? 'Guardar' : 'Agregar')}
+            ) : (isEdit ? 'Guardar cambios' : 'Agregar')}
           </Button>
         </DialogFooter>
       </DialogContent>

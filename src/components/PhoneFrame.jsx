@@ -12,7 +12,7 @@ export function PhoneFrame({ children }) {
         className="min-h-screen bg-[radial-gradient(circle_at_top,_#d1e8c0,_#e7edf4_42%,_#dde4ed_100%)] sm:px-6 sm:py-8"
       >
         <Card className="mx-auto min-h-screen w-full max-w-[390px] overflow-hidden border border-border/70 bg-card py-0 shadow-2xl sm:min-h-[780px] sm:rounded-[32px]">
-          <Separator className="mx-auto mt-2 h-1.5 w-20 rounded-full bg-black sm:mt-4" />
+          <Separator className="mx-auto mt-2 h-1.5 w-20 rounded-full sm:mt-4" />
           {!isOnline && (
             <div className="flex items-center justify-center gap-2 bg-red-600 px-4 py-2 text-sm font-semibold text-white">
               <WifiOff className="size-4 shrink-0" />

@@ -80,20 +80,20 @@ function ReminderFormDialog({ open, initial, onClose, onSave }) {
     <Dialog open={open} onOpenChange={(o) => { if (!o && !loading) onClose() }}>
       <DialogContent className="rounded-3xl" showCloseButton={false}>
         <DialogHeader className="flex items-center">
-          <DialogTitle>{isEdit ? 'Editar recordatorio' : 'Nuevo recordatorio'}</DialogTitle>
+          <DialogTitle>{isEdit ? 'Editar recordatorio' : 'Agregar recordatorio'}</DialogTitle>
         </DialogHeader>
         <div className="space-y-3">
           <FormField
             required
             label="Nombre"
-            placeholder="Ej: Pago de tarjeta"
+            placeholder="Ej. Pago de tarjeta"
             value={form.name}
             error={errors.name}
             onChange={(e) => set('name', e.target.value)}
           />
           <FormField
             label="Descripción"
-            placeholder="Ej: Pagar la cuota de crédito..."
+            placeholder="Ej. Pagar la cuota de crédito..."
             value={form.description}
             onChange={(e) => set('description', e.target.value)}
           />
@@ -114,7 +114,7 @@ function ReminderFormDialog({ open, initial, onClose, onSave }) {
                 <Loader2 className="size-4 animate-spin" />
                 Guardando...
               </span>
-            ) : 'Guardar'}
+            ) : isEdit ? "Guardar cambios" : "Agregar" }
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -189,7 +189,7 @@ export function RemindersPage() {
       {reminders.length === 0 ? (
         <EmptyStateCard
           title="Aún no hay recordatorios"
-          subtitle="Agrega un recordatorio para no olvidar tu fecha de pago"
+          subtitle="Agrega un recordatorio para no olvidar tu fecha de pago."
           cta="Agregar recordatorio"
           action={openAdd}
         />
@@ -268,7 +268,7 @@ export function RemindersPage() {
       <Dialog open={!!deleteTarget} onOpenChange={(o) => { if (!o) setDeleteTarget(null) }}>
         <DialogContent className="rounded-3xl" showCloseButton={false}>
           <DialogHeader className="flex items-center">
-            <DialogTitle>Eliminar recordatorio</DialogTitle>
+            <DialogTitle>¿Eliminar este recordatorio?</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-muted-foreground text-center">
             ¿Estás seguro de que quieres eliminar <strong>{deleteTarget?.name}</strong>? <br/> Esta acción no se puede deshacer.
