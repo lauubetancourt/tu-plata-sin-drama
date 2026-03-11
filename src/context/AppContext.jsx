@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 // ── Seed data (shown when isNewUser === false) ──────────────────────────────
 const MOVEMENTS_SEED = [
@@ -83,7 +83,6 @@ export function AppProvider({ children }) {
   const [isNewUser, setIsNewUser] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false);
-  const syncAttemptRef = useRef(0);
 
   // ── Data arrays ─────────────────────────────────────────────────────────
   const [movements, setMovements] = useState(MOVEMENTS_SEED);
@@ -159,17 +158,13 @@ export function AppProvider({ children }) {
 
   // ── Cloud sync simulation ───────────────────────────────────────────────
   function syncData() {
-    syncAttemptRef.current += 1;
-    const attempt = syncAttemptRef.current;
-
     setIsSyncing(true);
 
     return new Promise((resolve, reject) => {
       window.setTimeout(() => {
-        const shouldFail = !isOnline || attempt % 2 === 0;
         setIsSyncing(false);
 
-        if (shouldFail) {
+        if (!isOnline) {
           reject(
             new Error(
               "No pudimos sincronizar por un problema de red. Tus datos quedaron guardados localmente.",

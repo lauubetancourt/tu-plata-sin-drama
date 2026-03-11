@@ -6,10 +6,15 @@ import { PhoneFrame } from "../components/PhoneFrame";
 import { StatCard } from "../components/StatCard";
 import { useApp } from "../context/AppContext";
 import { PHONE_FRAME_TOASTER_ID } from "../components/ui/sonner";
-import { Bell, CircleHelp, MoveRight, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
-import { BanknoteArrowDown } from "lucide-react";
-import { BanknoteArrowUp } from "lucide-react";
+import {
+  BanknoteArrowDown,
+  BanknoteArrowUp,
+  Bell,
+  CircleHelp,
+  MoveRight,
+  RefreshCw,
+} from "lucide-react";
 
 function fmtShort(n) {
   if (n === 0) return "$0";
@@ -29,7 +34,7 @@ export function DashboardPage() {
     .filter((m) => m.type === "gasto")
     .reduce((s, m) => s + m.amount, 0);
 
-  async function handleSync() {
+  function handleSync() {
     if (isSyncing) return;
 
     toast.promise(syncData, {

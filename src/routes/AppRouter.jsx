@@ -1,16 +1,16 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { BiometricLoginPage } from '../pages/BiometricLoginPage'
-import { CategoriesPage } from '../pages/categories/CategoriesPage'
-import { DashboardPage } from '../pages/DashboardPage'
-import { GoalsPage } from '../pages/goals/GoalsPage'
-import { GoalsIntroPage } from '../pages/goals/GoalsIntroPage'
-import { MovementsPage } from '../pages/movements/MovementsPage'
-import { OnboardingBudgetPage } from '../pages/onboarding/OnboardingBudgetPage'
-import { OnboardingGoalPage } from '../pages/onboarding/OnboardingGoalPage'
-import { OnboardingTrackPage } from '../pages/onboarding/OnboardingTrackPage'
-import { OnboardingWelcomePage } from '../pages/onboarding/OnboardingWelcomePage'
-import { RemindersPage } from '../pages/reminders/RemindersPage'
-import { QuickRegisterPage } from '../pages/QuickRegisterPage'
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BiometricLoginPage } from "../pages/BiometricLoginPage";
+import { CategoriesPage } from "../pages/categories/CategoriesPage";
+import { DashboardPage } from "../pages/DashboardPage";
+import { GoalsPage } from "../pages/goals/GoalsPage";
+import { GoalsIntroPage } from "../pages/goals/GoalsIntroPage";
+import { MovementsPage } from "../pages/movements/MovementsPage";
+import { OnboardingBudgetPage } from "../pages/onboarding/OnboardingBudgetPage";
+import { OnboardingGoalPage } from "../pages/onboarding/OnboardingGoalPage";
+import { OnboardingTrackPage } from "../pages/onboarding/OnboardingTrackPage";
+import { OnboardingWelcomePage } from "../pages/onboarding/OnboardingWelcomePage";
+import { RemindersPage } from "../pages/reminders/RemindersPage";
+import { QuickRegisterPage } from "../pages/QuickRegisterPage";
 
 export function AppRouter() {
   return (
@@ -30,6 +30,5 @@ export function AppRouter() {
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
-
