@@ -1,17 +1,12 @@
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { DollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
+import { AppBrandBar } from "./AppBrandBar";
 
 export function PageHeader({ title, backTo, rightSlot }) {
   return (
     <header>
-      <div className="flex flex-row items-center justify-center gap-1 bg-transparent">
-        <DollarSign className="size-3 text-primary" />
-        <p className="text-sm font-medium tracking-wide text-muted-foreground">
-          Tu plata, sin drama
-        </p>
-      </div>
+      <AppBrandBar />
       <div className="mt-8 mb-5 flex items-center justify-between">
         <div className="w-24">
           {backTo ? (

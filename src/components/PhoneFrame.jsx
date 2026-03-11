@@ -2,17 +2,24 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { WifiOff } from "lucide-react";
 import { useApp } from "../context/AppContext";
+import { PHONE_FRAME_TOASTER_ID, Toaster } from "./ui/sonner";
 
 export function PhoneFrame({ children }) {
   const { isOnline, setIsOnline, isNewUser, setIsNewUser } = useApp();
 
   return (
     <>
-      <div
-        className="min-h-screen bg-[radial-gradient(circle_at_top,_#d1e8c0,_#e7edf4_42%,_#dde4ed_100%)] sm:px-6 sm:py-8"
-      >
-        <Card className="mx-auto min-h-screen w-full max-w-[390px] overflow-hidden border border-border/70 bg-card py-0 shadow-2xl sm:min-h-[780px] sm:rounded-[32px]">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#d1e8c0,_#e7edf4_42%,_#dde4ed_100%)] sm:px-6 sm:py-8">
+        <Card className="relative mx-auto min-h-screen w-full max-w-[390px] gap-0 overflow-hidden border border-border/70 bg-card py-0 shadow-2xl sm:min-h-[780px] sm:rounded-[32px]">
           <Separator className="mx-auto mt-2 h-1.5 w-20 rounded-full sm:mt-4" />
+          <Toaster
+            id={PHONE_FRAME_TOASTER_ID}
+            position="bottom-center"
+            richColors
+            offset={{ bottom: 12 }}
+            mobileOffset={{ bottom: 12, left: 12, right: 12 }}
+            style={{ position: "absolute", zIndex: 30 }}
+          />
           {!isOnline && (
             <div className="flex items-center justify-center gap-2 bg-red-600 px-4 py-2 text-sm font-semibold text-white">
               <WifiOff className="size-4 shrink-0" />

@@ -1,12 +1,13 @@
 import { Separator } from "@/components/ui/separator";
 import { ActionTile } from "../components/ActionTile";
-import { BottomNav } from "../components/BottomNav";
+import { AppBrandBar } from "../components/AppBrandBar";
 import { Button } from "../components/Button";
 import { PhoneFrame } from "../components/PhoneFrame";
 import { StatCard } from "../components/StatCard";
 import { useApp } from "../context/AppContext";
-import { DollarSign } from "lucide-react";
-import { MoveRight } from "lucide-react";
+import { PHONE_FRAME_TOASTER_ID } from "../components/ui/sonner";
+import { Bell, CircleHelp, MoveRight, RefreshCw } from "lucide-react";
+import { toast } from "sonner";
 import { BanknoteArrowDown } from "lucide-react";
 import { BanknoteArrowUp } from "lucide-react";
 
@@ -18,7 +19,7 @@ function fmtShort(n) {
 }
 
 export function DashboardPage() {
-  const { movements, isNewUser } = useApp();
+  const { movements, isSyncing, syncData } = useApp();
 
   const income = movements
     .filter((m) => m.type === "ingreso")
@@ -28,18 +29,36 @@ export function DashboardPage() {
     .filter((m) => m.type === "gasto")
     .reduce((s, m) => s + m.amount, 0);
 
+  async function handleSync() {
+    if (isSyncing) return;
+
+    toast.promise(syncData, {
+      toasterId: PHONE_FRAME_TOASTER_ID,
+      loading: "Sincronizando tus datos con la nube...",
+      success: (result) => result.message,
+      error: (error) =>
+        error instanceof Error
+          ? error.message
+          : "No pudimos sincronizar. Tus datos quedaron guardados localmente.",
+    });
+  }
+
+  const dashboardActions = [
+    { icon: Bell, label: "Notificaciones" },
+    { icon: CircleHelp, label: "Ayuda" },
+    {
+      icon: RefreshCw,
+      label: "Sincronizar",
+      onClick: handleSync,
+      disabled: isSyncing,
+      iconClassName: isSyncing ? "animate-spin" : "",
+    },
+  ];
+
   return (
     <PhoneFrame>
       <section className="space-y-5">
-        <div
-          className="flex flex-row items-center justify-center bg-transparent"
-          variant="secondary"
-        >
-          <DollarSign className="text-primary" />
-          <p className="text-xl font-bold text-muted-foreground">
-            Tu plata, sin drama
-          </p>
-        </div>
+        <AppBrandBar align="left" actions={dashboardActions} />
         <Button variant="cta" size="lg" to="/registro-express">
           Agregar gasto rápido <MoveRight className="ml-1" />
         </Button>
