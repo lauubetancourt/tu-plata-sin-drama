@@ -10,11 +10,11 @@ import { toast } from "sonner";
 import {
   BanknoteArrowDown,
   BanknoteArrowUp,
-  Bell,
   CircleHelp,
   MoveRight,
   RefreshCw,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function fmtShort(n) {
   if (n === 0) return "$0";
@@ -25,6 +25,7 @@ function fmtShort(n) {
 
 export function DashboardPage() {
   const { movements, isSyncing, syncData } = useApp();
+  const navigate = useNavigate();
 
   const income = movements
     .filter((m) => m.type === "ingreso")
@@ -49,8 +50,11 @@ export function DashboardPage() {
   }
 
   const dashboardActions = [
-    { icon: Bell, label: "Notificaciones" },
-    { icon: CircleHelp, label: "Ayuda" },
+    {
+      icon: CircleHelp,
+      label: "Ayuda",
+      onClick: () => navigate("/educacion-financiera"),
+    },
     {
       icon: RefreshCw,
       label: "Sincronizar",

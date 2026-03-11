@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { AppBrandBar } from "./AppBrandBar";
 
-export function PageHeader({ title, backTo, rightSlot }) {
+export function PageHeader({ title, backTo, rightSlot, titleClassName = "" }) {
   return (
     <header>
       <AppBrandBar />
@@ -22,7 +22,12 @@ export function PageHeader({ title, backTo, rightSlot }) {
             </Link>
           ) : null}
         </div>
-        <h1 className="text-xl font-bold tracking-tight text-foreground">
+        <h1
+          className={cn(
+            "text-xl font-bold tracking-tight text-foreground",
+            titleClassName,
+          )}
+        >
           {title}
         </h1>
         <div className="w-24 text-right text-xs font-semibold text-muted-foreground">

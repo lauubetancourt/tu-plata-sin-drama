@@ -31,25 +31,25 @@ const AWARENESS_NOTIFICATIONS = {
     label: "Info",
     title: "Subieron tus gastos pequeños",
     message:
-      "Esta semana registraste mas consumos hormiga de lo habitual. Verlos juntos puede darte mas contexto.",
+      "Esta semana registraste más consumos hormiga de lo habitual. Verlos juntos puede darte más contexto.",
     date: "2026-03-10",
   },
   warning: {
     icon: TriangleAlert,
     toast: "warning",
     label: "Advertencia",
-    title: "Comida va cerca de tu limite",
+    title: "Comida va cerca de tu límite",
     message:
-      "Has usado el 82% de tu presupuesto en comida. Revisarlo hoy puede evitarte presion al cierre del mes.",
+      "Has usado el 82% de tu presupuesto en comida. Revisarlo hoy puede evitarte presión al cierre del mes.",
     date: "2026-03-11",
   },
   suggestion: {
     icon: Lightbulb,
     toast: "success",
     label: "Sugerencia",
-    title: "Transporte crecio frente a la semana pasada",
+    title: "Transporte creció frente a la semana pasada",
     message:
-      "Si agregas una nota al proximo gasto de transporte, te sera mas facil entender el cambio y ajustar.",
+      "Si agregas una nota al próximo gasto de transporte, te será más fácil entender el cambio y ajustar.",
     date: "2026-03-09",
   },
 };
@@ -75,7 +75,7 @@ export function PhoneFrame({ children }) {
           <p>{notification.message}</p>
           <div className="flex items-center gap-1.5 text-xs opacity-80">
             <Bell className="size-3" />
-            <span>Notificacion del sistema</span>
+            <span>Notificación del sistema</span>
             <span aria-hidden="true">·</span>
             <span>{fmtDate(notification.date)}</span>
           </div>
@@ -145,7 +145,7 @@ export function PhoneFrame({ children }) {
               className="w-44"
             >
               <DropdownMenuGroup>
-                <DropdownMenuLabel>Disparar notificacion</DropdownMenuLabel>
+                <DropdownMenuLabel>Disparar notificación</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {Object.entries(AWARENESS_NOTIFICATIONS).map(
                   ([type, notification]) => {

@@ -2,8 +2,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { BiometricLoginPage } from "../pages/BiometricLoginPage";
 import { CategoriesPage } from "../pages/categories/CategoriesPage";
 import { DashboardPage } from "../pages/DashboardPage";
+import { FinancialEducationPage } from "../pages/education/FinancialEducationPage";
 import { GoalsPage } from "../pages/goals/GoalsPage";
-import { GoalsIntroPage } from "../pages/goals/GoalsIntroPage";
 import { MovementsPage } from "../pages/movements/MovementsPage";
 import { OnboardingBudgetPage } from "../pages/onboarding/OnboardingBudgetPage";
 import { OnboardingGoalPage } from "../pages/onboarding/OnboardingGoalPage";
@@ -26,6 +26,10 @@ export function AppRouter() {
         <Route path="/movimientos" element={<MovementsPage />} />
         <Route path="/categorias" element={<CategoriesPage />} />
         <Route path="/metas" element={<GoalsPage />} />
+        <Route
+          path="/educacion-financiera"
+          element={<FinancialEducationPage />}
+        />
         <Route path="/recordatorios" element={<RemindersPage />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
