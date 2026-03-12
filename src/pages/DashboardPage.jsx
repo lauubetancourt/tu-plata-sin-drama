@@ -11,9 +11,13 @@ import {
   BanknoteArrowDown,
   BanknoteArrowUp,
   CircleHelp,
+  FileOutput,
+  FileSpreadsheet,
+  FileText,
   MoveRight,
   RefreshCw,
 } from "lucide-react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function fmtShort(n) {
@@ -26,6 +30,8 @@ function fmtShort(n) {
 export function DashboardPage() {
   const { movements, isSyncing, syncData } = useApp();
   const navigate = useNavigate();
+  const [isExporting, setIsExporting] = useState(false);
+  const exportAttemptRef = useRef(0);
 
   const income = movements
     .filter((m) => m.type === "ingreso")
@@ -49,11 +55,71 @@ export function DashboardPage() {
     });
   }
 
+  function exportMonthlySummary(format) {
+    exportAttemptRef.current += 1;
+    const shouldFail = exportAttemptRef.current % 2 === 0;
+
+    setIsExporting(true);
+
+    return new Promise((resolve, reject) => {
+      window.setTimeout(() => {
+        setIsExporting(false);
+
+        if (shouldFail) {
+          reject(
+            new Error(
+              `No pudimos generar tu resumen mensual en ${format}. Inténtalo de nuevo en un momento.`,
+            ),
+          );
+          return;
+        }
+
+        resolve({
+          format,
+          message: `Tu resumen mensual en ${format} está listo para compartir.`,
+        });
+      }, 2000);
+    });
+  }
+
+  function handleExport(format) {
+    if (isExporting) return;
+
+    toast.promise(exportMonthlySummary(format), {
+      toasterId: PHONE_FRAME_TOASTER_ID,
+      loading: `Generando tu resumen mensual en ${format}...`,
+      success: (result) => result.message,
+      error: (error) =>
+        error instanceof Error
+          ? error.message
+          : `No pudimos generar tu resumen mensual en ${format}. Inténtalo de nuevo en un momento.`,
+    });
+  }
+
   const dashboardActions = [
     {
       icon: CircleHelp,
       label: "Ayuda",
       onClick: () => navigate("/educacion-financiera"),
+    },
+    {
+      icon: FileOutput,
+      label: "Exportar",
+      disabled: isExporting,
+      menuItems: [
+        {
+          label: "Exportar PDF",
+          icon: FileText,
+          onClick: () => handleExport("PDF"),
+          disabled: isExporting,
+        },
+        {
+          label: "Exportar Excel",
+          icon: FileSpreadsheet,
+          onClick: () => handleExport("Excel"),
+          disabled: isExporting,
+        },
+      ],
     },
     {
       icon: RefreshCw,
