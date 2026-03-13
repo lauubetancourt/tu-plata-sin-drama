@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { CheckCircle, Loader2 } from 'lucide-react'
+import { CheckCircle, Loader2, WifiOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '../../components/Button'
 import { FormField } from '../../components/FormField'
 import { SelectField } from '../../components/SelectField'
 import { PageHeader } from '../../components/PageHeader'
 import { PhoneFrame } from '../../components/PhoneFrame'
+import { useApp } from '../../context/AppContext'
 
 const CATEGORIES = ['Comida', 'Transporte', 'Entretenimiento', 'Salud', 'Personal', 'Educación', 'Otro']
 const PERIODICITIES = ['Semanal', 'Quincenal', 'Mensual', 'Anual']
@@ -27,6 +28,7 @@ function nextChargeLabel(dateStr, periodicity) {
 }
 
 export function NewMovementPage() {
+  const { isOnline } = useApp()
   const [type, setType] = useState('gasto')
   const [amount, setAmount] = useState('')
   const [category, setCategory] = useState('')
@@ -79,16 +81,30 @@ export function NewMovementPage() {
   }
 
   const isExpense = type === 'gasto'
+  const isOfflineSave = saved && !isOnline
 
   return (
     <PhoneFrame>
       <PageHeader title="Nuevo movimiento" backTo="/movimientos" />
 
       {saved && (
-        <div className="flex flex-col gap-1 rounded-xl bg-emerald-100 px-4 py-3 text-sm font-semibold text-emerald-800">
+        <div
+          className={cn(
+            'flex flex-col gap-1 rounded-xl px-4 py-3 text-sm font-semibold',
+            isOfflineSave
+              ? 'border border-amber-300 bg-amber-50 text-amber-800'
+              : 'bg-emerald-100 text-emerald-800',
+          )}
+        >
           <div className="flex items-center gap-2">
-            <CheckCircle className="size-4 shrink-0" />
-            Movimiento guardado exitosamente
+            {isOfflineSave ? (
+              <WifiOff className="size-4 shrink-0" />
+            ) : (
+              <CheckCircle className="size-4 shrink-0" />
+            )}
+            {isOnline
+              ? 'Movimiento guardado exitosamente'
+              : 'Sin conexión — movimiento guardado localmente'}
           </div>
           {nextCharge && (
             <p className="text-xs font-normal">Próximo cobro automático: {nextCharge}</p>

@@ -48,6 +48,8 @@ export function AppBrandBar({
               disabled = false,
               iconClassName = "",
             }) => {
+              const isExitAction = label?.toLowerCase() === "salir";
+
               if (menuItems?.length) {
                 return (
                   <DropdownMenu key={label} modal={false}>
@@ -55,6 +57,7 @@ export function AppBrandBar({
                       <button
                         type="button"
                         aria-label={label}
+                        title={label}
                         disabled={disabled}
                         className={cn(
                           buttonVariants({
@@ -65,7 +68,11 @@ export function AppBrandBar({
                         )}
                       >
                         {createElement(icon, {
-                          className: cn("size-4", iconClassName),
+                          className: cn(
+                            "size-4",
+                            isExitAction && "text-destructive",
+                            iconClassName,
+                          ),
                         })}
                       </button>
                     </DropdownMenuTrigger>
@@ -101,6 +108,7 @@ export function AppBrandBar({
                   key={label}
                   type="button"
                   aria-label={label}
+                  title={label}
                   disabled={disabled}
                   onClick={onClick}
                   className={cn(
@@ -109,7 +117,11 @@ export function AppBrandBar({
                   )}
                 >
                   {createElement(icon, {
-                    className: cn("size-4", iconClassName),
+                    className: cn(
+                      "size-4",
+                      isExitAction && "text-destructive",
+                      iconClassName,
+                    ),
                   })}
                 </button>
               );

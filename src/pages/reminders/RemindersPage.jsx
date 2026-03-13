@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
-import { BellOff, CalendarClock, CheckCircle, Loader2, Pencil, Plus, Trash2 } from 'lucide-react'
+import { BellOff, CalendarClock, CheckCircle, Loader2, Pencil, Plus, Trash2, WifiOff } from 'lucide-react'
 import { useApp } from '../../context/AppContext'
 import { Button } from '../../components/Button'
 import { EmptyStateCard } from '../../components/EmptyStateCard'
@@ -123,7 +123,7 @@ function ReminderFormDialog({ open, initial, onClose, onSave }) {
 }
 
 export function RemindersPage() {
-  const { isNewUser, reminders, addReminder, updateReminder, removeReminder } = useApp()
+  const { isNewUser, isOnline, reminders, addReminder, updateReminder, removeReminder } = useApp()
 
   const [formOpen, setFormOpen] = useState(false)
   const [formTarget, setFormTarget] = useState(null)
@@ -149,10 +149,10 @@ export function RemindersPage() {
   function handleSave(data) {
     if (formTarget) {
       updateReminder(formTarget.id, data)
-      showSuccess('¡Recordatorio actualizado!')
+      showSuccess(isOnline ? '¡Recordatorio actualizado!' : 'Sin conexión — cambios guardados localmente.')
     } else {
       addReminder(data)
-      showSuccess('¡Recordatorio agregado!')
+      showSuccess(isOnline ? '¡Recordatorio agregado!' : 'Sin conexión — recordatorio guardado localmente.')
     }
     closeForm()
   }
@@ -162,6 +162,8 @@ export function RemindersPage() {
     setDeleteTarget(null)
     showSuccess('Recordatorio eliminado')
   }
+
+  const isOfflineSave = successMsg.startsWith('Sin conexión')
 
   return (
     <PhoneFrame>
@@ -179,8 +181,19 @@ export function RemindersPage() {
 
       {/* Success banner */}
       {successMsg && (
-        <div className="flex items-center gap-2 rounded-xl bg-emerald-100 px-4 py-3 text-sm font-semibold text-emerald-800">
-          <CheckCircle className="size-4 shrink-0" />
+        <div
+          className={cn(
+            'flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold',
+            isOfflineSave
+              ? 'border border-amber-300 bg-amber-50 text-amber-800'
+              : 'bg-emerald-100 text-emerald-800',
+          )}
+        >
+          {isOfflineSave ? (
+            <WifiOff className="size-4 shrink-0" />
+          ) : (
+            <CheckCircle className="size-4 shrink-0" />
+          )}
           {successMsg}
         </div>
       )}

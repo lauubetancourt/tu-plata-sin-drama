@@ -45,7 +45,7 @@ const FINANCIAL_TIPS = [
     id: 2,
     title: "Ahorrar poco también cuenta",
     body: "Si este mes no puedes guardar mucho, empieza con una cantidad mínima que sí puedas sostener. La constancia vale más que esperar el momento perfecto.",
-    kicker: "Para empezar hoy",
+    kicker: "Empieza hoy",
     image: makeTipCover("Ahorro constante", "#7b5d2e", "#caa164"),
   },
   {
@@ -70,18 +70,18 @@ export function FinancialEducationPage() {
         {FINANCIAL_TIPS.map((tip) => {
           return (
             <Card key={tip.id} className="relative mx-auto w-full pt-0">
-              <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
+              <div className="absolute inset-0 z-30 aspect-video bg-green/35" />
               <img
                 src={tip.image}
                 alt={tip.title}
-                className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale dark:brightness-40"
+                className="relative z-20 aspect-video w-full object-cover brightness-60 dark:brightness-40"
               />
               <CardHeader>
                 <CardAction>
                   <Badge variant="secondary">{tip.kicker}</Badge>
                 </CardAction>
                 <CardTitle>{tip.title}</CardTitle>
-                <CardDescription>{tip.body}</CardDescription>
+                <CardDescription className="col-span-2">{tip.body}</CardDescription>
               </CardHeader>
             </Card>
           );

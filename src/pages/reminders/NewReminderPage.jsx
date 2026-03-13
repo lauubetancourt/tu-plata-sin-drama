@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, CardContent } from '@/components/ui/card'
-import { CheckCircle, Loader2 } from 'lucide-react'
+import { CheckCircle, Loader2, WifiOff } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { Button } from '../../components/Button'
 import { FormField } from '../../components/FormField'
 import { PageHeader } from '../../components/PageHeader'
 import { PhoneFrame } from '../../components/PhoneFrame'
+import { useApp } from '../../context/AppContext'
 
 function todayISO() {
   return new Date().toISOString().split('T')[0]
 }
 
 export function NewReminderPage() {
+  const { isOnline } = useApp()
   const [description, setDescription] = useState('')
   const [date, setDate] = useState('')
   const [errors, setErrors] = useState({})
@@ -45,14 +48,29 @@ export function NewReminderPage() {
     setLoading(true)
   }
 
+  const isOfflineSave = saved && !isOnline
+
   return (
     <PhoneFrame>
       <PageHeader title="Nuevo recordatorio" backTo="/recordatorios" />
 
       {saved && (
-        <div className="flex items-center gap-2 rounded-xl bg-emerald-100 px-4 py-3 text-sm font-semibold text-emerald-800">
-          <CheckCircle className="size-4 shrink-0" />
-          Recordatorio creado exitosamente
+        <div
+          className={cn(
+            'flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold',
+            isOfflineSave
+              ? 'border border-amber-300 bg-amber-50 text-amber-800'
+              : 'bg-emerald-100 text-emerald-800',
+          )}
+        >
+          {isOfflineSave ? (
+            <WifiOff className="size-4 shrink-0" />
+          ) : (
+            <CheckCircle className="size-4 shrink-0" />
+          )}
+          {isOnline
+            ? 'Recordatorio creado exitosamente'
+            : 'Sin conexión — recordatorio guardado localmente'}
         </div>
       )}
 

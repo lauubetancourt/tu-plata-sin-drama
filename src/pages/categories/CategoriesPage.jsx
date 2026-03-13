@@ -8,7 +8,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { AlertTriangle, CheckCircle, Pencil, Plus, Trash2 } from "lucide-react";
+import {
+  AlertTriangle,
+  CheckCircle,
+  Pencil,
+  Plus,
+  Trash2,
+  WifiOff,
+} from "lucide-react";
 import { useApp } from "../../context/AppContext";
 import { Button } from "../../components/Button";
 import { EmptyStateCard } from "../../components/EmptyStateCard";
@@ -21,8 +28,14 @@ function fmt(n) {
 }
 
 export function CategoriesPage() {
-  const { isNewUser, categories, addCategory, updateCategory, removeCategory } =
-    useApp();
+  const {
+    isNewUser,
+    isOnline,
+    categories,
+    addCategory,
+    updateCategory,
+    removeCategory,
+  } = useApp();
 
   // ── form dialog (create + edit) ────────────────────────────────────────
   const [formOpen, setFormOpen] = useState(false);
@@ -87,10 +100,18 @@ export function CategoriesPage() {
         name: formName.trim(),
         budget: Number(formBudget) || 0,
       });
-      showSuccess("¡Categoría actualizada!");
+      showSuccess(
+        isOnline
+          ? "¡Categoría actualizada!"
+          : "Sin conexión — cambios guardados localmente.",
+      );
     } else {
       addCategory({ name: formName.trim(), budget: Number(formBudget) || 0 });
-      showSuccess("¡Categoría agregada!");
+      showSuccess(
+        isOnline
+          ? "¡Categoría agregada!"
+          : "Sin conexión — categoría guardada localmente.",
+      );
     }
     closeForm();
   }
@@ -101,14 +122,27 @@ export function CategoriesPage() {
     showSuccess("Categoría eliminada.");
   }
 
+  const isOfflineSave = successMsg.startsWith("Sin conexión");
+
   return (
     <PhoneFrame>
       <PageHeader title="Categorías" backTo="/dashboard" />
 
       {/* Success banner */}
       {successMsg && (
-        <div className="flex items-center gap-2 rounded-xl bg-emerald-100 px-4 py-3 text-sm font-semibold text-emerald-800">
-          <CheckCircle className="size-4 shrink-0" />
+        <div
+          className={cn(
+            "flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold",
+            isOfflineSave
+              ? "border border-amber-300 bg-amber-50 text-amber-800"
+              : "bg-emerald-100 text-emerald-800",
+          )}
+        >
+          {isOfflineSave ? (
+            <WifiOff className="size-4 shrink-0" />
+          ) : (
+            <CheckCircle className="size-4 shrink-0" />
+          )}
           {successMsg}
         </div>
       )}

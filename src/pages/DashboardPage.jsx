@@ -6,6 +6,12 @@ import { PhoneFrame } from "../components/PhoneFrame";
 import { StatCard } from "../components/StatCard";
 import { useApp } from "../context/AppContext";
 import { PHONE_FRAME_TOASTER_ID } from "../components/ui/sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import {
   BanknoteArrowDown,
@@ -16,9 +22,11 @@ import {
   FileText,
   MoveRight,
   RefreshCw,
+  SquareArrowRightExit,
 } from "lucide-react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { HandCoins } from "lucide-react";
 
 function fmtShort(n) {
   if (n === 0) return "$0";
@@ -98,28 +106,9 @@ export function DashboardPage() {
 
   const dashboardActions = [
     {
-      icon: CircleHelp,
-      label: "Ayuda",
+      icon: HandCoins,
+      label: "Educación financiera",
       onClick: () => navigate("/educacion-financiera"),
-    },
-    {
-      icon: FileOutput,
-      label: "Exportar",
-      disabled: isExporting,
-      menuItems: [
-        {
-          label: "Exportar PDF",
-          icon: FileText,
-          onClick: () => handleExport("PDF"),
-          disabled: isExporting,
-        },
-        {
-          label: "Exportar Excel",
-          icon: FileSpreadsheet,
-          onClick: () => handleExport("Excel"),
-          disabled: isExporting,
-        },
-      ],
     },
     {
       icon: RefreshCw,
@@ -127,6 +116,11 @@ export function DashboardPage() {
       onClick: handleSync,
       disabled: isSyncing,
       iconClassName: isSyncing ? "animate-spin" : "",
+    },
+    {
+      icon: SquareArrowRightExit,
+      label: "Salir",
+      onClick: () => navigate("/"),
     },
   ];
 
@@ -138,19 +132,63 @@ export function DashboardPage() {
           Agregar gasto rápido <MoveRight className="ml-1" />
         </Button>
 
-        <section className="grid grid-cols-2 gap-3">
-          <StatCard
-            icon={<BanknoteArrowDown />}
-            amount={fmtShort(income)}
-            label="Ingresos"
-            tone="income"
-          />
-          <StatCard
-            icon={<BanknoteArrowUp />}
-            amount={fmtShort(expenses)}
-            label="Gastos"
-            tone="expense"
-          />
+        <section className="space-y-2 p-2">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-sm font-bold text-muted-foreground">Resumen financiero</p>
+              <p className="text-xs text-muted-foreground">Marzo 2025</p>
+            </div>
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  disabled={isExporting}
+                  className="h-10 w-auto rounded-xl"
+                >
+                  <FileOutput className="size-4" />
+                  Exportar
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                side="bottom"
+                sideOffset={8}
+                className="w-40"
+              >
+                <DropdownMenuItem
+                  disabled={isExporting}
+                  onClick={() => handleExport("PDF")}
+                >
+                  <FileText className="size-4" />
+                  Exportar PDF
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  disabled={isExporting}
+                  onClick={() => handleExport("Excel")}
+                >
+                  <FileSpreadsheet className="size-4" />
+                  Exportar Excel
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          <Separator />
+
+          <div className="grid grid-cols-2 gap-3">
+            <StatCard
+              icon={<BanknoteArrowDown />}
+              amount={fmtShort(income)}
+              label="Ingresos"
+              tone="income"
+            />
+            <StatCard
+              icon={<BanknoteArrowUp />}
+              amount={fmtShort(expenses)}
+              label="Gastos"
+              tone="expense"
+            />
+          </div>
         </section>
 
         <section className="space-y-3">

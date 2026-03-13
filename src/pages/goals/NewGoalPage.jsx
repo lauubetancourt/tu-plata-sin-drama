@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, CardContent } from '@/components/ui/card'
-import { CheckCircle, Loader2 } from 'lucide-react'
+import { CheckCircle, Loader2, WifiOff } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { Button } from '../../components/Button'
 import { FormField } from '../../components/FormField'
 import { PageHeader } from '../../components/PageHeader'
 import { PhoneFrame } from '../../components/PhoneFrame'
+import { useApp } from '../../context/AppContext'
 
 function todayISO() {
   return new Date().toISOString().split('T')[0]
 }
 
 export function NewGoalPage() {
+  const { isOnline } = useApp()
   const [name, setName] = useState('')
   const [target, setTarget] = useState('')
   const [deadline, setDeadline] = useState('')
@@ -54,15 +57,29 @@ export function NewGoalPage() {
   }
 
   const hasErrors = Object.keys(errors).length > 0
+  const isOfflineSave = saved && !isOnline
 
   return (
     <PhoneFrame>
       <PageHeader title="Nueva meta" backTo="/metas/intro" />
 
       {saved && (
-        <div className="flex items-center gap-2 rounded-xl bg-emerald-100 px-4 py-3 text-sm font-semibold text-emerald-800">
-          <CheckCircle className="size-4 shrink-0" />
-          Meta creada exitosamente
+        <div
+          className={cn(
+            'flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold',
+            isOfflineSave
+              ? 'border border-amber-300 bg-amber-50 text-amber-800'
+              : 'bg-emerald-100 text-emerald-800',
+          )}
+        >
+          {isOfflineSave ? (
+            <WifiOff className="size-4 shrink-0" />
+          ) : (
+            <CheckCircle className="size-4 shrink-0" />
+          )}
+          {isOnline
+            ? 'Meta creada exitosamente'
+            : 'Sin conexión — meta guardada localmente'}
         </div>
       )}
 

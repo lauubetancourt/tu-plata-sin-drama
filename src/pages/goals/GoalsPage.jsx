@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { CheckCircle, Loader2, Pencil, Plus, Trash2 } from "lucide-react";
+import {
+  CheckCircle,
+  Loader2,
+  Pencil,
+  Plus,
+  Trash2,
+  WifiOff,
+} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -176,7 +183,8 @@ function GoalFormDialog({ open, initial, onClose, onSave }) {
 }
 
 export function GoalsPage() {
-  const { isNewUser, goals, addGoal, updateGoal, removeGoal } = useApp();
+  const { isNewUser, isOnline, goals, addGoal, updateGoal, removeGoal } =
+    useApp();
 
   const [formOpen, setFormOpen] = useState(false);
   const [formTarget, setFormTarget] = useState(null); // null → create | object → edit
@@ -204,10 +212,18 @@ export function GoalsPage() {
   function handleSave(data) {
     if (formTarget) {
       updateGoal(formTarget.id, data);
-      showSuccess("¡Meta actualizada!");
+      showSuccess(
+        isOnline
+          ? "¡Meta actualizada!"
+          : "Sin conexión — cambios guardados localmente.",
+      );
     } else {
       addGoal(data);
-      showSuccess("¡Meta creada!");
+      showSuccess(
+        isOnline
+          ? "¡Meta creada!"
+          : "Sin conexión — meta guardada localmente.",
+      );
     }
     closeForm();
   }
@@ -218,14 +234,27 @@ export function GoalsPage() {
     showSuccess("Meta eliminada");
   }
 
+  const isOfflineSave = successMsg.startsWith("Sin conexión");
+
   return (
     <PhoneFrame>
       <PageHeader title="Metas de ahorro" backTo="/dashboard" />
 
       {/* Success banner */}
       {successMsg && (
-        <div className="flex items-center gap-2 rounded-xl bg-emerald-100 px-4 py-3 text-sm font-semibold text-emerald-800">
-          <CheckCircle className="size-4 shrink-0" />
+        <div
+          className={cn(
+            "flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold",
+            isOfflineSave
+              ? "border border-amber-300 bg-amber-50 text-amber-800"
+              : "bg-emerald-100 text-emerald-800",
+          )}
+        >
+          {isOfflineSave ? (
+            <WifiOff className="size-4 shrink-0" />
+          ) : (
+            <CheckCircle className="size-4 shrink-0" />
+          )}
           {successMsg}
         </div>
       )}

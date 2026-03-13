@@ -9,7 +9,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { CheckCircle, Pencil, Plus, Repeat2, Trash2, Zap } from "lucide-react";
+import {
+  CheckCircle,
+  Pencil,
+  Plus,
+  Repeat2,
+  Trash2,
+  WifiOff,
+  Zap,
+} from "lucide-react";
 import { useApp } from "../../context/AppContext";
 import { Button } from "../../components/Button";
 import { EmptyStateCard } from "../../components/EmptyStateCard";
@@ -74,10 +82,18 @@ export function MovementsPage() {
   function handleSave(data) {
     if (formTarget) {
       updateMovement(formTarget.id, data);
-      showSuccess("¡Movimiento actualizado!");
+      showSuccess(
+        isOnline
+          ? "¡Movimiento actualizado!"
+          : "Sin conexión — cambios guardados localmente.",
+      );
     } else {
       addMovement(data);
-      showSuccess("¡Movimiento agregado!");
+      showSuccess(
+        isOnline
+          ? "¡Movimiento agregado!"
+          : "Sin conexión — movimiento guardado localmente.",
+      );
     }
     closeForm();
   }
@@ -89,14 +105,27 @@ export function MovementsPage() {
   }
 
   // ── Render ────────────────────────────────────────────────────────────────
+  const isOfflineSave = successMsg.startsWith("Sin conexión");
+
   return (
     <PhoneFrame>
       <PageHeader title="Movimientos" backTo="/dashboard" />
 
       {/* Success banner */}
       {successMsg && (
-        <div className="flex items-center gap-2 rounded-xl bg-emerald-100 px-4 py-3 text-sm font-semibold text-emerald-800">
-          <CheckCircle className="size-4 shrink-0" />
+        <div
+          className={cn(
+            "flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold",
+            isOfflineSave
+              ? "border border-amber-300 bg-amber-50 text-amber-800"
+              : "bg-emerald-100 text-emerald-800",
+          )}
+        >
+          {isOfflineSave ? (
+            <WifiOff className="size-4 shrink-0" />
+          ) : (
+            <CheckCircle className="size-4 shrink-0" />
+          )}
           {successMsg}
         </div>
       )}

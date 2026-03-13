@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, CardContent } from '@/components/ui/card'
-import { CheckCircle, Loader2 } from 'lucide-react'
+import { CheckCircle, Loader2, WifiOff } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { Button } from '../../components/Button'
 import { FormField } from '../../components/FormField'
 import { PageHeader } from '../../components/PageHeader'
 import { PhoneFrame } from '../../components/PhoneFrame'
+import { useApp } from '../../context/AppContext'
 
 // Mock del recordatorio que se está editando
 const MOCK = { description: 'Pago de tarjeta', date: '2026-03-28' }
 
 export function EditReminderPage() {
+  const { isOnline } = useApp()
   const [description, setDescription] = useState(MOCK.description)
   const [date, setDate] = useState(MOCK.date)
   const [errors, setErrors] = useState({})
@@ -44,14 +47,29 @@ export function EditReminderPage() {
     setLoading(true)
   }
 
+  const isOfflineSave = saved && !isOnline
+
   return (
     <PhoneFrame>
       <PageHeader title="Editar recordatorio" backTo="/recordatorios" />
 
       {saved && (
-        <div className="flex items-center gap-2 rounded-xl bg-emerald-100 px-4 py-3 text-sm font-semibold text-emerald-800">
-          <CheckCircle className="size-4 shrink-0" />
-          Cambios guardados exitosamente
+        <div
+          className={cn(
+            'flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold',
+            isOfflineSave
+              ? 'border border-amber-300 bg-amber-50 text-amber-800'
+              : 'bg-emerald-100 text-emerald-800',
+          )}
+        >
+          {isOfflineSave ? (
+            <WifiOff className="size-4 shrink-0" />
+          ) : (
+            <CheckCircle className="size-4 shrink-0" />
+          )}
+          {isOnline
+            ? 'Cambios guardados exitosamente'
+            : 'Sin conexión — cambios guardados localmente'}
         </div>
       )}
 
