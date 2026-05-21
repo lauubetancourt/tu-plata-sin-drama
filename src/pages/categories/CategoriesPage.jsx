@@ -80,7 +80,7 @@ export function CategoriesPage() {
   function handleSave() {
     const e = {};
     if (!formName.trim()) {
-      e.name = "Ingresa un nombre para la categoría";
+      e.name = "Escribe un nombre para crear esta categoría.";
     } else if (
       categories.some(
         (c) =>
@@ -151,7 +151,7 @@ export function CategoriesPage() {
       {categories.length === 0 ? (
         <EmptyStateCard
           title="Aún no hay categorías"
-          subtitle="Agrega categorías para organizar tus gastos y asignarles un presupuesto."
+          subtitle="Crea una para organizar tu plata y asignarle un presupuesto."
           cta="Agregar categoría"
           action={openAdd}
         />

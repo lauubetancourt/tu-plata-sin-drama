@@ -39,7 +39,6 @@ function fmtDate(iso) {
 
 export function MovementsPage() {
   const {
-    isNewUser,
     isOnline,
     movements,
     addMovement,
@@ -80,19 +79,21 @@ export function MovementsPage() {
   }
 
   function handleSave(data) {
+    const movementLabel = data.type === "ingreso" ? "Ingreso" : "Gasto";
+
     if (formTarget) {
       updateMovement(formTarget.id, data);
       showSuccess(
         isOnline
-          ? "¡Movimiento actualizado!"
+          ? `¡${movementLabel} actualizado!`
           : "Sin conexión — cambios guardados localmente.",
       );
     } else {
       addMovement(data);
       showSuccess(
         isOnline
-          ? "¡Movimiento agregado!"
-          : "Sin conexión — movimiento guardado localmente.",
+          ? `¡${movementLabel} agregado!`
+          : `Sin conexión — ${movementLabel.toLowerCase()} guardado localmente.`,
       );
     }
     closeForm();

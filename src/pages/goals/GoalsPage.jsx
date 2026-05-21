@@ -83,14 +83,14 @@ function GoalFormDialog({ open, initial, onClose, onSave }) {
 
   function validate() {
     const e = {};
-    if (!form.name.trim()) e.name = "Ingresa un nombre para tu meta";
+    if (!form.name.trim()) e.name = "Escribe el propósito de tu meta de ahorro.";
     if (!form.target || Number(form.target) <= 0)
-      e.target = "La meta debe ser mayor a cero";
+      e.target = "Escribe un valor mayor a cero para agregar esta meta de ahorro.";
     if (form.saved !== "" && Number(form.saved) < 0)
       e.saved = "El valor no puede ser negativo";
-    if (!form.deadline) e.deadline = "Elige una fecha límite";
+    if (!form.deadline) e.deadline = "Elige una fecha para alcanzar esta meta de ahorro.";
     else if (form.deadline <= todayISO() && !isEdit)
-      e.deadline = "La fecha límite debe ser futura";
+      e.deadline = "Elige una fecha posterior a hoy para agregar esta meta de ahorro.";
     return e;
   }
 
@@ -126,7 +126,7 @@ function GoalFormDialog({ open, initial, onClose, onSave }) {
         <div className="space-y-3">
           <FormField
             required
-            label="Nombre"
+            label="¿Para qué quieres ahorrar?"
             placeholder="Ej. Viaje a la playa, Carro"
             value={form.name}
             error={errors.name}
@@ -135,7 +135,7 @@ function GoalFormDialog({ open, initial, onClose, onSave }) {
           <FormField
             required
             inputMode="numeric"
-            label="Valor"
+            label="¿Cuánto quieres ahorrar?"
             placeholder="Ej. 100000"
             value={form.target}
             error={errors.target}
@@ -145,7 +145,7 @@ function GoalFormDialog({ open, initial, onClose, onSave }) {
           />
           <FormField
             inputMode="numeric"
-            label="Ahorro actual"
+            label="¿Cuánto llevas ahorrado? (opcional)"
             placeholder="Ej. 5000"
             value={form.saved}
             error={errors.saved}

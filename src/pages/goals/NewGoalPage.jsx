@@ -47,7 +47,7 @@ export function NewGoalPage() {
 
   function handleSave() {
     const e = {}
-    if (!name.trim()) e.name = 'El nombre es obligatorio'
+    if (!name.trim()) e.name = 'Escribe el propósito de tu ahorro para crear esta meta.'
     if (!target) e.target = 'El valor de la meta es obligatorio'
     else if (Number(target) === 0) e.target = 'El valor de la meta debe ser mayor a cero'
     if (!deadline) e.deadline = 'La fecha límite es obligatoria'
@@ -88,7 +88,7 @@ export function NewGoalPage() {
           <FormField
             required
             autoFocus
-            label="Nombre de la meta"
+            label="¿Para qué quieres ahorrar?"
             placeholder="Ej. Viaje, Fondo de emergencia"
             value={name}
             error={errors.name}
@@ -100,7 +100,7 @@ export function NewGoalPage() {
           <FormField
             required
             inputMode="numeric"
-            label="Valor de la meta"
+            label="¿Cuánto quieres ahorrar?"
             placeholder="Ingresa el monto"
             value={target}
             error={errors.target}

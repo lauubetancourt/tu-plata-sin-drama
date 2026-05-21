@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,51 @@ import { FormField } from './FormField'
 import { SelectField } from './SelectField'
 
 const PERIODICITIES = ['Semanal', 'Quincenal', 'Mensual', 'Anual']
+const MOVEMENT_TYPES = ['gasto', 'ingreso']
+const MOVEMENT_COPY = {
+  gasto: {
+    createTitle: 'Agregar gasto',
+    editTitle: 'Editar gasto',
+    nameLabel: '¿Qué gasto realizaste?',
+    namePlaceholder: 'Ej. Almuerzo, arriendo',
+    nameRequired: 'Escribe qué gasto realizaste para agregarlo.',
+    amountLabel: 'Valor del gasto',
+    amountPlaceholder: 'Ej. 15000',
+    amountRequired: 'Escribe el valor para agregar este gasto.',
+    categoryRequired: 'Selecciona una categoría para este gasto.',
+    descriptionLabel: 'Descripción del gasto',
+    descriptionPlaceholder: 'Ej. Almuerzo de cumpleaños, arriendo de oficina',
+    dateLabel: 'Fecha del gasto',
+    dateRequired: 'La fecha del gasto es obligatoria',
+    recurringLabel: '¿Es un gasto recurrente?',
+    startDateLabel: 'Fecha de inicio del gasto',
+    startDateRequired: 'La fecha de inicio del gasto es obligatoria',
+    endDateLabel: 'Fecha de fin del gasto (opcional)',
+    periodicityLabel: 'Frecuencia del gasto',
+    loadingCreate: 'Agregando gasto...',
+    loadingEdit: 'Guardando gasto...',
+    submitCreate: 'Agregar gasto',
+    submitEdit: 'Guardar cambios',
+  },
+  ingreso: {
+    createTitle: 'Agregar ingreso',
+    editTitle: 'Editar ingreso',
+    nameLabel: '¿Qué ingreso recibiste?',
+    namePlaceholder: 'Ej. Salario, venta',
+    nameRequired: 'Escribe qué ingreso recibiste para agregarlo.',
+    amountLabel: 'Valor del ingreso',
+    amountPlaceholder: 'Ej. 2500000',
+    amountRequired: 'Escribe el valor para agregar este ingreso.',
+    descriptionLabel: 'Descripción del ingreso',
+    descriptionPlaceholder: 'Ej. Quincena de marzo, venta de bicicleta',
+    dateLabel: 'Fecha del ingreso',
+    dateRequired: 'La fecha del ingreso es obligatoria',
+    loadingCreate: 'Agregando ingreso...',
+    loadingEdit: 'Guardando ingreso...',
+    submitCreate: 'Agregar ingreso',
+    submitEdit: 'Guardar cambios',
+  },
+}
 
 function todayISO() {
   return new Date().toISOString().split('T')[0]
@@ -59,21 +104,19 @@ function toForm(movement) {
  *  categoryNames – string[] of available category names
  *  isOnline      – boolean; shows offline warning inside form when false
  */
-export function MovementFormDialog({ open, initial, onClose, onSave, categoryNames, isOnline }) {
+export function MovementFormDialog(props) {
+  const { open, initial } = props
+  const resetKey = open ? `${initial?.id ?? 'create'}-${initial?.type ?? 'gasto'}` : 'closed'
+
+  return <MovementFormDialogContent key={resetKey} {...props} />
+}
+
+function MovementFormDialogContent({ open, initial, onClose, onSave, categoryNames, isOnline }) {
   const isEdit = !!initial
 
   const [form, setForm] = useState(() => toForm(initial))
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
-
-  // Reset form each time the dialog opens or the target movement changes
-  useEffect(() => {
-    if (open) {
-      setForm(toForm(initial))
-      setErrors({})
-      setLoading(false)
-    }
-  }, [open, initial])
 
   function set(key, val) {
     setForm((prev) => ({ ...prev, [key]: val }))
@@ -84,16 +127,34 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
     })
   }
 
+  function handleTypeChange(type) {
+    setForm((prev) => ({
+      ...prev,
+      type,
+      ...(type === 'ingreso'
+        ? {
+            category: '',
+            recurring: false,
+            startDate: todayISO(),
+            endDate: '',
+            periodicity: 'Mensual',
+          }
+        : {}),
+    }))
+    setErrors({})
+  }
+
   function validate() {
     const e = {}
-    if (!form.name.trim()) e.name = 'El nombre es obligatorio'
+    const copy = MOVEMENT_COPY[form.type] ?? MOVEMENT_COPY.gasto
+    if (!form.name.trim()) e.name = copy.nameRequired
     if (!form.amount || Number(form.amount) === 0)
-      e.amount = 'El monto debe ser mayor a cero'
+      e.amount = copy.amountRequired
     if (form.type === 'gasto' && !form.category)
-      e.category = 'La categoría es obligatoria'
-    if (!form.date) e.date = 'La fecha es obligatoria'
+      e.category = copy.categoryRequired
+    if (!form.date) e.date = copy.dateRequired
     if (form.type === 'gasto' && form.recurring && !form.startDate)
-      e.startDate = 'La fecha de inicio es obligatoria'
+      e.startDate = copy.startDateRequired
     return e
   }
 
@@ -114,12 +175,13 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
   }
 
   const isExpense = form.type === 'gasto'
+  const copy = MOVEMENT_COPY[form.type] ?? MOVEMENT_COPY.gasto
 
   return (
     <Dialog open={open} onOpenChange={(o) => { if (!o && !loading) onClose() }}>
       <DialogContent className="rounded-3xl" showCloseButton={false}>
         <DialogHeader className="flex items-center">
-          <DialogTitle>{isEdit ? 'Editar movimiento' : 'Agregar movimiento'}</DialogTitle>
+          <DialogTitle>{isEdit ? copy.editTitle : copy.createTitle}</DialogTitle>
         </DialogHeader>
 
         {!isOnline && (
@@ -132,7 +194,7 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
         <div className="max-h-[55vh] space-y-3 overflow-y-auto pr-1">
           {/* Type toggle — segmented control */}
           <div className="flex rounded-xl bg-muted p-1 gap-1">
-            {['gasto', 'ingreso'].map((t) => (
+            {MOVEMENT_TYPES.map((t) => (
               <button
                 key={t}
                 className={cn(
@@ -141,7 +203,7 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
                     ? 'bg-background text-foreground shadow-sm'
                     : 'text-muted-foreground hover:text-foreground',
                 )}
-                onClick={() => set('type', t)}
+                onClick={() => handleTypeChange(t)}
               >
                 {t}
               </button>
@@ -150,8 +212,8 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
 
           <FormField
             required
-            label="Nombre"
-            placeholder={isExpense ? 'Ej. Almuerzo, arriendo' : 'Ej. Salario, venta'}
+            label={copy.nameLabel}
+            placeholder={copy.namePlaceholder}
             value={form.name}
             error={errors.name}
             onChange={(e) => set('name', e.target.value)}
@@ -160,8 +222,8 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
           <FormField
             required
             inputMode="numeric"
-            label="Valor"
-            placeholder={'Ej. 15000'}
+            label={copy.amountLabel}
+            placeholder={copy.amountPlaceholder}
             value={form.amount}
             error={errors.amount}
             onChange={(e) => set('amount', e.target.value.replace(/[^0-9]/g, ''))}
@@ -183,8 +245,8 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
           )}
 
           <FormField
-            label="Descripción"
-            placeholder={isExpense ? 'Ej. Almuerzo de cumpleaños, arriendo de oficina' : 'Ej. Quincena de marzo, venta de bicicleta'}
+            label={copy.descriptionLabel}
+            placeholder={copy.descriptionPlaceholder}
             value={form.description}
             onChange={(e) => set('description', e.target.value)}
           />
@@ -195,7 +257,7 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
               <Separator />
               <label className="flex cursor-pointer items-center justify-between">
                 <span className="text-xs font-semibold text-muted-foreground">
-                  ¿Es recurrente?
+                  {copy.recurringLabel}
                 </span>
                 <input
                   type="checkbox"
@@ -211,7 +273,7 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
           {(!isExpense || !form.recurring) && (
             <FormField
               required
-              label="Fecha"
+              label={copy.dateLabel}
               type="date"
               value={form.date}
               error={errors.date}
@@ -224,21 +286,21 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
             <>
               <FormField
                 required
-                label="Fecha de inicio"
+                label={copy.startDateLabel}
                 type="date"
                 value={form.startDate}
                 error={errors.startDate}
                 onChange={(e) => set('startDate', e.target.value)}
               />
               <FormField
-                label="Fecha de fin (opcional)"
+                label={copy.endDateLabel}
                 type="date"
                 value={form.endDate}
                 onChange={(e) => set('endDate', e.target.value)}
               />
               <SelectField
                 required
-                label="Periodicidad"
+                label={copy.periodicityLabel}
                 value={form.periodicity}
                 onChange={(e) => set('periodicity', e.target.value)}
               >
@@ -258,9 +320,9 @@ export function MovementFormDialog({ open, initial, onClose, onSave, categoryNam
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <Loader2 className="size-4 animate-spin" />
-                Agregando...
+                {isEdit ? copy.loadingEdit : copy.loadingCreate}
               </span>
-            ) : (isEdit ? 'Guardar cambios' : 'Agregar')}
+            ) : (isEdit ? copy.submitEdit : copy.submitCreate)}
           </Button>
         </DialogFooter>
       </DialogContent>
