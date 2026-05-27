@@ -16,12 +16,12 @@ export function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<BiometricLoginPage />} />
+        {/* <Route path="/" element={<BiometricLoginPage />} /> */}
         <Route path="/onboarding/1" element={<OnboardingWelcomePage />} />
         <Route path="/onboarding/2" element={<OnboardingTrackPage />} />
         <Route path="/onboarding/3" element={<OnboardingBudgetPage />} />
         <Route path="/onboarding/4" element={<OnboardingGoalPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/" element={<DashboardPage />} />
         <Route path="/registro-express" element={<QuickRegisterPage />} />
         <Route path="/movimientos" element={<MovementsPage />} />
         <Route path="/categorias" element={<CategoriesPage />} />

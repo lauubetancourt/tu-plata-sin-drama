@@ -24,7 +24,7 @@ import {
   RefreshCw,
   SquareArrowRightExit,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HandCoins } from "lucide-react";
 
@@ -36,10 +36,14 @@ function fmtShort(n) {
 }
 
 export function DashboardPage() {
-  const { movements, isSyncing, syncData } = useApp();
+  const { movements, isSyncing, setIsNewUser, syncData } = useApp();
   const navigate = useNavigate();
   const [isExporting, setIsExporting] = useState(false);
   const exportAttemptRef = useRef(0);
+
+  useEffect(() => {
+    setIsNewUser(true);
+  }, [setIsNewUser]);
 
   const income = movements
     .filter((m) => m.type === "ingreso")
@@ -136,7 +140,7 @@ export function DashboardPage() {
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-sm font-bold text-muted-foreground">Resumen financiero</p>
-              <p className="text-xs text-muted-foreground">Marzo 2025</p>
+              <p className="text-xs text-muted-foreground">Mayo 2026</p>
             </div>
             <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>

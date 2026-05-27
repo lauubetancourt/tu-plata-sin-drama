@@ -51,6 +51,14 @@ const CATEGORIES_SEED = [
   { id: 5, name: "Personal", budget: 0, spent: 45000 },
 ];
 
+const NEW_USER_CATEGORIES = [
+  { id: 1, name: "Comida", budget: 0, spent: 0 },
+  { id: 2, name: "Transporte", budget: 0, spent: 0 },
+  { id: 3, name: "Hogar", budget: 0, spent: 0 },
+  { id: 4, name: "Servicios", budget: 0, spent: 0 },
+  { id: 5, name: "Personal", budget: 0, spent: 0 },
+];
+
 const GOALS_SEED = [
   {
     id: 1,
@@ -80,22 +88,24 @@ const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
   // ── Dev flags ───────────────────────────────────────────────────────────
-  const [isNewUser, setIsNewUser] = useState(false);
+  const [isNewUser, setIsNewUser] = useState(true);
   const [isOnline, setIsOnline] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false);
 
   // ── Data arrays ─────────────────────────────────────────────────────────
-  const [movements, setMovements] = useState(MOVEMENTS_SEED);
-  const [categories, setCategories] = useState(CATEGORIES_SEED);
-  const [goals, setGoals] = useState(GOALS_SEED);
-  const [reminders, setReminders] = useState(REMINDERS_SEED);
+  const [movements, setMovements] = useState([]);
+  const [categories, setCategories] = useState(NEW_USER_CATEGORIES);
+  const [goals, setGoals] = useState([]);
+  const [reminders, setReminders] = useState([]);
 
   // When isNewUser toggles, reset arrays accordingly
   function toggleNewUser(val) {
+    if (isNewUser === val) return;
+
     setIsNewUser(val);
     if (val) {
       setMovements([]);
-      setCategories([]);
+      setCategories(NEW_USER_CATEGORIES);
       setGoals([]);
       setReminders([]);
     } else {
